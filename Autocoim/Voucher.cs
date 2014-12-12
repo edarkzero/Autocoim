@@ -8,11 +8,12 @@ namespace Autocoim
 {
     class Voucher
     {
-        public Voucher()
+        public Voucher(string n)
         {
+            name = n;
             razon_social = "";
             vendor_doc_num = "";
-            txt_field = "";
+            txt_field = "";            
             tax_amount = 0;
             tax_det_perc = 0;
             taxable_amount = 0;
@@ -22,7 +23,8 @@ namespace Autocoim
 
         public void print()
         {
-
+            PdfManager pdfManager = new PdfManager(PdfManager.TYPE_IVA,this);
+            pdfManager.render();
         }
 
         public string RazonSocial
@@ -64,6 +66,19 @@ namespace Autocoim
             }
         }
 
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                if (value != null)
+                    name = value;
+            }
+        }
+
         public double taxDetPerc
         {
             get
@@ -72,8 +87,7 @@ namespace Autocoim
             }
             set
             {
-                if (value != null)
-                    tax_det_perc = value;
+                tax_det_perc = value;
             }
         }
 
@@ -84,9 +98,8 @@ namespace Autocoim
                 return tax_amount;
             }
             set
-            {
-                if (value != null)
-                    tax_amount = value;
+            {   
+                tax_amount = value;
             }
         }
 
@@ -98,8 +111,7 @@ namespace Autocoim
             }
             set
             {
-                if (value != null)
-                    taxable_amount = value;
+                taxable_amount = value;
             }
         }
 
@@ -129,7 +141,7 @@ namespace Autocoim
             }
         }
 
-        private string razon_social,vendor_doc_num,txt_field;
+        private string razon_social,vendor_doc_num,txt_field,name;
         private double tax_det_perc,tax_amount,taxable_amount;
         private DateTime document_date, posting_date;
     }

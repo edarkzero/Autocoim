@@ -67,15 +67,13 @@ namespace Autocoim
                 object[,] valueArray = (object[,])excelRange.get_Value(
                     XlRangeValueDataType.xlRangeValueDefault);
 
-                Console.WriteLine(sheet.Name);
-                Console.WriteLine();
-                ProcessObjects(valueArray);
+                ProcessObjects(valueArray,sheet.Name);
             }
         }
 
-        private void ProcessObjects(object[,] valueArray)
+        private void ProcessObjects(object[,] valueArray,string sheetName)
         {
-            Voucher voucher = new Voucher();
+            Voucher voucher = new Voucher(sheetName);
 
             // Get upper bounds for the array.
             int n = valueArray.GetUpperBound(0);
