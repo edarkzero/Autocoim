@@ -144,5 +144,18 @@ namespace Autocoim
         private string razon_social,vendor_doc_num,txt_field,name;
         private double tax_det_perc,tax_amount,taxable_amount;
         private DateTime document_date, posting_date;
+        public const string RAZON_FS = "FLOWSERVE DE VENEZUELA C.C.A.";
+        public const string RIF_FS = "J002723335";
+        public const string DIR_FS = "AV. 68 # 149B155 ZONA INDUSTRIAL II ETAPA MARACAIBO ESTADO ZULIA VENEZUELA";
+
+        public string getNroComprobante()
+        {
+            return posting_date.Year.ToString() + posting_date.Month.ToString() + "00000458";
+        }
+
+        public string getPeriodoFiscal()
+        {
+            return posting_date.Year.ToString() + posting_date.Month.ToString();
+        }
     }
 }
