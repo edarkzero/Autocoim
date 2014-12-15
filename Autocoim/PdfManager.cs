@@ -197,16 +197,17 @@ namespace Autocoim
                 XRect MainTableHeaderAlicuotaRect = new XRect(MainTableHeaderImponibleRect.TopRight.X, MainTableHeaderImponibleRect.TopRight.Y, MainTableHeaderOperRect.Width, MainTableHeaderRect.Height);
                 tf_left.DrawString("Alícuota", fontSubtitle, XBrushes.Black, MainTableHeaderAlicuotaRect, XStringFormats.TopLeft);
 
-                //Main table Header Impuesto
+                    //Main table Header Impuesto
                 XRect MainTableHeaderImpuestoRect = new XRect(MainTableHeaderAlicuotaRect.TopRight.X, MainTableHeaderAlicuotaRect.TopRight.Y, MainTableHeaderOperRect.Width, MainTableHeaderRect.Height);
                 tf_left.DrawString("Impuesto", fontSubtitle, XBrushes.Black, MainTableHeaderImpuestoRect, XStringFormats.TopLeft);
 
-                //Main table Header IVA Ret.
+                    //Main table Header IVA Ret.
                 XRect MainTableHeaderIvaRetRect = new XRect(MainTableHeaderImpuestoRect.TopRight.X, MainTableHeaderImpuestoRect.TopRight.Y, MainTableHeaderOperRect.Width, MainTableHeaderRect.Height);
                 tf_left.DrawString("IVA Ret.", fontSubtitle, XBrushes.Black, MainTableHeaderIvaRetRect, XStringFormats.TopLeft);
 
                 //Main table Row
                 XRect MainTableRowRect = new XRect(MainTableHeaderRect.X, MainTableHeaderRect.Bottom, MainTableHeaderRect.Width, MainTableHeaderRect.Height);
+
 
                 // Draw the PAGE text
                 gfx.DrawString("Page 1", fontPage, XBrushes.LightGray,
