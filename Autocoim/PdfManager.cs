@@ -67,7 +67,7 @@ namespace Autocoim
                 // Draw logo
                 XRect logoRect = new XRect(borderMargin, borderMargin, fechaRectsWidth, 50);
                 XImage image = XImage.FromFile("Images/flowserve.png");
-                gfx.DrawImage(image, logoRect.X, logoRect.Y, logoRect.Width, logoRect.Height);                
+                gfx.DrawImage(image, logoRect.X, logoRect.Y, logoRect.Width, logoRect.Height);
 
                 // Draw (fecha,periodo fiscal,nro. de comprobante) top-right rectangles
                 // with 2 lines of string
@@ -208,6 +208,58 @@ namespace Autocoim
                 //Main table Row
                 XRect MainTableRowRect = new XRect(MainTableHeaderRect.X, MainTableHeaderRect.Bottom, MainTableHeaderRect.Width, MainTableHeaderRect.Height);
 
+                    //Main table Row Oper. Nro.
+                XRect MainTableRowOperRect = new XRect(MainTableRowRect.X, MainTableRowRect.Y, MainTableRowRect.Width / 10, MainTableRowRect.Height);
+                tf_left.DrawString(voucher.OperNro.ToString(), fontContent, XBrushes.Black, MainTableRowOperRect, XStringFormats.TopLeft);
+
+                    //Main table Row Fecha
+                XRect MainTableRowFechaRect = new XRect(MainTableRowOperRect.TopRight.X, MainTableRowOperRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
+                tf_left.DrawString(voucher.documentDate.ToShortDateString(), fontContent, XBrushes.Black, MainTableRowFechaRect, XStringFormats.TopLeft);
+
+                    //Main table Row Nro. Factura
+                XRect MainTableRowFacturaRect = new XRect(MainTableRowFechaRect.TopRight.X, MainTableRowFechaRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
+                tf_left.DrawString(voucher.VendorDocNum, fontContent, XBrushes.Black, MainTableRowFacturaRect, XStringFormats.TopLeft);
+
+                    //Main table Row Nro. Control FC
+                XRect MainTableRowControlFCRect = new XRect(MainTableRowFacturaRect.TopRight.X, MainTableRowFacturaRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
+                tf_left.DrawString(voucher.txtField, fontContent, XBrushes.Black, MainTableRowControlFCRect, XStringFormats.TopLeft);
+
+                    //Main table Row Nro. de ND
+                XRect MainTableRowNDRect = new XRect(MainTableRowControlFCRect.TopRight.X, MainTableRowControlFCRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
+                tf_left.DrawString("X", fontContent, XBrushes.Black, MainTableRowNDRect, XStringFormats.TopLeft);
+
+                    //Main table Row Nro. De NC
+                XRect MainTableRowNCRect = new XRect(MainTableRowNDRect.TopRight.X, MainTableRowNDRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
+                tf_left.DrawString("X", fontContent, XBrushes.Black, MainTableRowNCRect, XStringFormats.TopLeft);
+
+                    //Main table Row Base imponible
+                XRect MainTableRowImponibleRect = new XRect(MainTableRowNCRect.TopRight.X, MainTableRowNCRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
+                tf_left.DrawString(voucher.taxableAmount.ToString(), fontContent, XBrushes.Black, MainTableRowImponibleRect, XStringFormats.TopLeft);
+
+                    //Main table Row Alícuota
+                XRect MainTableRowAlicuotaRect = new XRect(MainTableRowImponibleRect.TopRight.X, MainTableRowImponibleRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
+                tf_left.DrawString(voucher.getTaxPercent(), fontContent, XBrushes.Black, MainTableRowAlicuotaRect, XStringFormats.TopLeft);
+
+                    //Main table Row Impuesto
+                XRect MainTableRowImpuestoRect = new XRect(MainTableRowAlicuotaRect.TopRight.X, MainTableRowAlicuotaRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
+                tf_left.DrawString(voucher.taxAmount.ToString(), fontContent, XBrushes.Black, MainTableRowImpuestoRect, XStringFormats.TopLeft);
+
+                    //Main table Row IVA Ret.
+                XRect MainTableRowIvaRetRect = new XRect(MainTableRowImpuestoRect.TopRight.X, MainTableRowImpuestoRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
+                tf_left.DrawString("X", fontContent, XBrushes.Black, MainTableRowIvaRetRect, XStringFormats.TopLeft);
+
+                //Footer note
+                double footerHeight = (fontTitle.Size*2);
+                XRect footerNoteRect = new XRect(borderMargin, page.Height - footerHeight - borderMargin, agenteDireccionMiddleTopRect.Width, footerHeight);
+                gfx.DrawRectangle(new XPen(XColors.Black, 0.3), footerNoteRect);
+                tf_left.DrawString(Voucher.NOTA, fontContent, XBrushes.Black, footerNoteRect, XStringFormats.TopLeft);
+
+                //Footer Sign
+                XRect footerSignRect = new XRect(footerNoteRect.X, footerNoteRect.Y - (borderMargin * 2), page.Width / 4, fontSubtitle.Size + innerMargin);
+                tf_left.DrawString("Departamento de Impuestos", fontSubtitle, XBrushes.Black, footerSignRect, XStringFormats.TopLeft);
+
+                XRect footerSignLineRect = new XRect(footerSignRect.X, footerSignRect.Y - borderMargin, footerSignRect.Width, fontContent.Size);
+                tf_left.DrawString("______________________________", fontContent, XBrushes.Black, footerSignLineRect, XStringFormats.TopLeft);
 
                 // Draw the PAGE text
                 gfx.DrawString("Page 1", fontPage, XBrushes.LightGray,

@@ -11,6 +11,7 @@ namespace Autocoim
         public Voucher(string n)
         {
             name = n;
+            oper_nro = 0;
             razon_social = "";
             vendor_doc_num = "";
             txt_field = "";            
@@ -87,7 +88,7 @@ namespace Autocoim
             }
             set
             {
-                tax_det_perc = value;
+                tax_det_perc = Math.Abs(value);
             }
         }
 
@@ -98,8 +99,8 @@ namespace Autocoim
                 return tax_amount;
             }
             set
-            {   
-                tax_amount = value;
+            {
+                tax_amount = Math.Abs(value);
             }
         }
 
@@ -111,7 +112,7 @@ namespace Autocoim
             }
             set
             {
-                taxable_amount = value;
+                taxable_amount = Math.Abs(value);
             }
         }
 
@@ -140,13 +141,14 @@ namespace Autocoim
                     posting_date = value;
             }
         }
-
-        private string razon_social,vendor_doc_num,txt_field,name;
-        private double tax_det_perc,tax_amount,taxable_amount;
-        private DateTime document_date, posting_date;
-        public const string RAZON_FS = "FLOWSERVE DE VENEZUELA C.C.A.";
-        public const string RIF_FS = "J002723335";
-        public const string DIR_FS = "AV. 68 # 149B155 ZONA INDUSTRIAL II ETAPA MARACAIBO ESTADO ZULIA VENEZUELA";
+        
+        public int OperNro
+        {
+            get
+            {
+                return oper_nro++;
+            }
+        }
 
         public string getNroComprobante()
         {
@@ -156,6 +158,20 @@ namespace Autocoim
         public string getPeriodoFiscal()
         {
             return posting_date.Year.ToString() + posting_date.Month.ToString();
+        }        
+
+        public string getTaxPercent()
+        {
+            return tax_det_perc + "%";
         }
+
+        private string razon_social, vendor_doc_num, txt_field, name;
+        private double tax_det_perc, tax_amount, taxable_amount;
+        private int oper_nro;
+        private DateTime document_date, posting_date;
+        public const string RAZON_FS = "FLOWSERVE DE VENEZUELA C.C.A.";
+        public const string RIF_FS = "J002723335";
+        public const string DIR_FS = "AV. 68 # 149B155 ZONA INDUSTRIAL II ETAPA MARACAIBO ESTADO ZULIA VENEZUELA";
+        public const string NOTA = "Ley IVA  Art. 11: Serán Responsables del pago del impuesto en calidad de agentes de retención, los comprobantes o adquirentes de determinados bienes muebles y los receptores de ciertos servicios, a quienes la administración tributaria decida como tal.";
     }
 }
