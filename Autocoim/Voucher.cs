@@ -11,7 +11,7 @@ namespace Autocoim
         public Voucher(string n)
         {
             name = n;
-            oper_nro = 0;
+            doc_num = "";
             razon_social = "";
             vendor_doc_num = "";
             txt_field = "";            
@@ -20,12 +20,60 @@ namespace Autocoim
             taxable_amount = 0;
             document_date = new DateTime();
             posting_date = new DateTime();
+            today = DateTime.Today;
+            setComprobanteData();            
         }
 
         public void print()
         {
             PdfManager pdfManager = new PdfManager(PdfManager.TYPE_IVA,this);
             pdfManager.render();
+        }
+
+        public void setComprobanteData()
+        {
+            Microsoft.Win32.RegistryKey key;
+            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("Autocoim");
+            bool diferentPeriod = false;
+            string comprobanteDate;
+
+            try
+            {
+                comprobanteDate = key.GetValue("comprobante date").ToString();
+
+                if (comprobanteDate != getPeriodoFiscal())
+                {
+                    key.SetValue("comprobante date", getPeriodoFiscal());
+                    diferentPeriod = true;
+                }
+            }
+            catch
+            {
+                key.SetValue("comprobante date", getPeriodoFiscal());
+                comprobanteDate = getPeriodoFiscal();
+            }
+
+            try
+            {
+                comprobante_key = (int)key.GetValue("comprobante key");
+
+                if (!diferentPeriod)
+                {
+                    key.SetValue("comprobante key", ++comprobante_key);
+                }
+                else
+                {
+                    key.SetValue("comprobante key", 0);
+                    comprobante_key = 0;
+                }
+            }
+            catch
+            {
+                key.SetValue("comprobante key", 0);
+                comprobante_key = 0;
+            }
+
+            key.Close();
         }
 
         public string RazonSocial
@@ -51,6 +99,19 @@ namespace Autocoim
             {
                 if (value != null)
                     vendor_doc_num = value;
+            }
+        }
+
+        public string DocNum
+        {
+            get
+            {
+                return doc_num;
+            }
+            set
+            {
+                if (value != null)
+                    doc_num = value;
             }
         }
 
@@ -140,35 +201,37 @@ namespace Autocoim
                 if (value != null)
                     posting_date = value;
             }
-        }
-        
-        public int OperNro
-        {
-            get
-            {
-                return oper_nro++;
-            }
-        }
+        }           
 
         public string getNroComprobante()
         {
-            return posting_date.Year.ToString() + posting_date.Month.ToString() + "00000458";
+            return getPeriodoFiscal() + comprobante_key;
         }
 
         public string getPeriodoFiscal()
         {
-            return posting_date.Year.ToString() + posting_date.Month.ToString();
-        }        
+            return today.ToString("yyyyMM");
+        }      
+  
+        public string getFechaComprobante()
+        {
+            return today.ToShortDateString();
+        }
 
         public string getTaxPercent()
         {
             return tax_det_perc + "%";
         }
 
-        private string razon_social, vendor_doc_num, txt_field, name;
+        public string getTax()
+        {
+            return Math.Round(taxable_amount * (tax_det_perc / 100), 2).ToString();
+        }
+
+        private string razon_social, vendor_doc_num, txt_field, name,doc_num;
         private double tax_det_perc, tax_amount, taxable_amount;
-        private int oper_nro;
-        private DateTime document_date, posting_date;
+        private DateTime document_date, posting_date,today;
+        private int comprobante_key;
         public const string RAZON_FS = "FLOWSERVE DE VENEZUELA C.C.A.";
         public const string RIF_FS = "J002723335";
         public const string DIR_FS = "AV. 68 # 149B155 ZONA INDUSTRIAL II ETAPA MARACAIBO ESTADO ZULIA VENEZUELA";

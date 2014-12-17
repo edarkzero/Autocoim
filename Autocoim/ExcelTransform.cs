@@ -96,6 +96,9 @@ namespace Autocoim
                         case 3:
                             voucher.txtField = (string)valueArray[i, j];
                             break;
+                        case 4:
+                            voucher.DocNum = (string)valueArray[i, j];
+                            break;
                         case 10:
                             voucher.taxDetPerc = (double)valueArray[i, j];
                             break;

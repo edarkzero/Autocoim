@@ -39,7 +39,7 @@ namespace Autocoim
 
                 // Create an empty page
                 PdfPage page = document.AddPage();
-                //page.Orientation = PageOrientation.Landscape;
+                page.Orientation = PageOrientation.Landscape;
 
                 // Get an XGraphics object for drawing
                 XGraphics gfx = XGraphics.FromPdfPage(page);
@@ -79,8 +79,8 @@ namespace Autocoim
                 XRect fechaUpperTitleRect = new XRect(fechaUpperRect.X, fechaUpperRect.Y, fechaUpperRect.Width, fechaUpperRect.Height / 2);
                 tf_center.DrawString("Fecha:", fontSubtitle, XBrushes.Black, fechaUpperTitleRect, XStringFormats.TopLeft);
 
-                XRect fechaUpperContentRect = new XRect(fechaUpperRect.X, fechaUpperRect.Center.Y, fechaUpperRect.Width, fechaUpperRect.Height / 2);                
-                tf_center.DrawString(voucher.postingDate.ToShortDateString(), fontContent, XBrushes.Black, fechaUpperContentRect, XStringFormats.TopLeft);
+                XRect fechaUpperContentRect = new XRect(fechaUpperRect.X, fechaUpperRect.Center.Y, fechaUpperRect.Width, fechaUpperRect.Height / 2);
+                tf_center.DrawString(voucher.getFechaComprobante(), fontContent, XBrushes.Black, fechaUpperContentRect, XStringFormats.TopLeft);
 
                     //Posting Date Año+Mes -> Periodo Fiscal
                 XRect periodoFiscalUpperRect = new XRect(fechaUpperRect.X, fechaUpperRect.BottomLeft.Y+innerMargin, fechaUpperRect.Width, fechaUpperRect.Height);
@@ -156,7 +156,7 @@ namespace Autocoim
                 tf_center.DrawString("Registro información Fiscal del Sujeto Retenido", fontSubtitle, XBrushes.Black, SujetoRetencionMiddleTopTitleRect, XStringFormats.TopLeft);
 
                 XRect SujetoRetencionMiddleTopContentRect = new XRect(SujetoRetencionMiddleTopRect.X, SujetoRetencionMiddleTopRect.Center.Y, SujetoRetencionMiddleTopRect.Width, SujetoRetencionMiddleTopRect.Height / 2);
-                tf_center.DrawString("FALTA", fontContent, XBrushes.Black, SujetoRetencionMiddleTopContentRect, XStringFormats.TopLeft);
+                tf_center.DrawString("voucher.CustomerID", fontContent, XBrushes.Black, SujetoRetencionMiddleTopContentRect, XStringFormats.TopLeft);
 
                 //Main table
                 XRect MainTableRect = new XRect(SujetoNombreMiddleTopRect.X, SujetoNombreMiddleTopRect.Bottom + innerMargin * 2, agenteDireccionMiddleTopRect.Width, agenteDireccionMiddleTopRect.Height*2);
@@ -210,7 +210,7 @@ namespace Autocoim
 
                     //Main table Row Oper. Nro.
                 XRect MainTableRowOperRect = new XRect(MainTableRowRect.X, MainTableRowRect.Y, MainTableRowRect.Width / 10, MainTableRowRect.Height);
-                tf_left.DrawString(voucher.OperNro.ToString(), fontContent, XBrushes.Black, MainTableRowOperRect, XStringFormats.TopLeft);
+                tf_left.DrawString(voucher.DocNum, fontContent, XBrushes.Black, MainTableRowOperRect, XStringFormats.TopLeft);
 
                     //Main table Row Fecha
                 XRect MainTableRowFechaRect = new XRect(MainTableRowOperRect.TopRight.X, MainTableRowOperRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
@@ -226,11 +226,11 @@ namespace Autocoim
 
                     //Main table Row Nro. de ND
                 XRect MainTableRowNDRect = new XRect(MainTableRowControlFCRect.TopRight.X, MainTableRowControlFCRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
-                tf_left.DrawString("X", fontContent, XBrushes.Black, MainTableRowNDRect, XStringFormats.TopLeft);
+                tf_left.DrawString(voucher.VendorDocNum, fontContent, XBrushes.Black, MainTableRowNDRect, XStringFormats.TopLeft);
 
                     //Main table Row Nro. De NC
                 XRect MainTableRowNCRect = new XRect(MainTableRowNDRect.TopRight.X, MainTableRowNDRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
-                tf_left.DrawString("X", fontContent, XBrushes.Black, MainTableRowNCRect, XStringFormats.TopLeft);
+                tf_left.DrawString(voucher.VendorDocNum, fontContent, XBrushes.Black, MainTableRowNCRect, XStringFormats.TopLeft);
 
                     //Main table Row Base imponible
                 XRect MainTableRowImponibleRect = new XRect(MainTableRowNCRect.TopRight.X, MainTableRowNCRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
@@ -242,11 +242,11 @@ namespace Autocoim
 
                     //Main table Row Impuesto
                 XRect MainTableRowImpuestoRect = new XRect(MainTableRowAlicuotaRect.TopRight.X, MainTableRowAlicuotaRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
-                tf_left.DrawString(voucher.taxAmount.ToString(), fontContent, XBrushes.Black, MainTableRowImpuestoRect, XStringFormats.TopLeft);
+                tf_left.DrawString(voucher.getTax(), fontContent, XBrushes.Black, MainTableRowImpuestoRect, XStringFormats.TopLeft);
 
                     //Main table Row IVA Ret.
                 XRect MainTableRowIvaRetRect = new XRect(MainTableRowImpuestoRect.TopRight.X, MainTableRowImpuestoRect.TopRight.Y, MainTableRowOperRect.Width, MainTableRowRect.Height);
-                tf_left.DrawString("X", fontContent, XBrushes.Black, MainTableRowIvaRetRect, XStringFormats.TopLeft);
+                tf_left.DrawString(voucher.taxAmount.ToString(), fontContent, XBrushes.Black, MainTableRowIvaRetRect, XStringFormats.TopLeft);
 
                 //Footer note
                 double footerHeight = (fontTitle.Size*2);
